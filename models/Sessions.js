@@ -31,6 +31,10 @@ const SessionSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: false
+    },
+    hasBallStarted: {
+        type: Boolean,
+        default: false
     }
 },
 { timestamps: true }
