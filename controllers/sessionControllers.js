@@ -66,6 +66,17 @@ exports.updateSession = async (req, res, next) => {
     for (const key of Object.keys(req.body)) {
         session[key] = req.body[key];
       }
+    
+    let io = req.app.get('io');
+    
+    io.on('connection', (socket) => {
+        console.log("New socket connection");
+        socket.emit('message', "Hello WebSocket")
+        // socket.to(session.sessionId).emit('updatedData', 1);
+        // socket.on("disconnect", () => console.log("Client disconnected"));
+    })
+
+
 
     console.log("<<<<<<AFTER UPDATE:>>>");
     console.log(session);

@@ -16,8 +16,9 @@ const sessionRoutes = require('./routes/sessionRoutes');
 // Connect to DB
 connectDB();
 
-
+// express app
 const app = express();
+
 
 // Body Parser
 app.use(express.json());
@@ -54,6 +55,9 @@ app.use("/api/v1/sessions", sessionRoutes );
 
 const PORT = process.env.PORT || 5051;
 const server = app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`))
+
+let io  = require('socket.io')(server);
+app.set("io", io);
 
 // handle unhandled promis rejection
 process.on('unhandledRejection', (err, promise) => {
