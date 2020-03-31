@@ -59,6 +59,12 @@ const server = app.listen(PORT, console.log(`Server running in ${process.env.NOD
 let io  = require('socket.io')(server);
 app.set("io", io);
 
+io.on('connection', (socket) => {
+  socket.emit('welcome', 'welcome from Server.js');
+  socket.on('react', (data) => console.log(data))
+  socket.on('disconnect', () => console.log("Socket user disconnect"))
+})
+
 // handle unhandled promis rejection
 process.on('unhandledRejection', (err, promise) => {
     console.log(`Error: ${err.message}` );

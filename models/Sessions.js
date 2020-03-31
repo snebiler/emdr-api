@@ -15,7 +15,7 @@ const SessionSchema = new mongoose.Schema({
     },
     ballShape: {
         type: String,
-        enum: ['square', 'circle', 'rectangle', 'oval', 'triangleup', 'triangledown', 'heart'],
+        enum: ['square', 'circle', 'rectangle', 'oval', 'triangleup', 'triangledown', 'diamond'],
         default: 'square'
     },
     direction: {
