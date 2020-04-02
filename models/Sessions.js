@@ -11,7 +11,13 @@ const SessionSchema = new mongoose.Schema({
         // ilerde ayri bi tablosu olacak
         type: String,
         required: [[true, "Please add a patient name"],],
-        maxlength: [30, "SessionId can not be more than 30 chars"]
+        maxlength: [30, "Patient name can not be more than 30 chars"]
+    },
+    drName: {
+        // ilerde ayri bi tablosu olacak
+        type: String,
+        required: [[true, "Please add a patient name"],],
+        maxlength: [30, "Dr Name can not be more than 30 chars"]
     },
     ballShape: {
         type: String,

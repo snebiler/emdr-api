@@ -88,9 +88,11 @@ exports.updateSession = async (req, res, next) => {
  * @access Private
  */
 exports.deleteSession = async (req, res, next) => {
-
+    console.log(req.body);
+    
     const sessionDeleted = await Sessions.findByIdAndDelete(req.body._id)
-
+    console.log(sessionDeleted);
+    
     res.status(200).json({ success: true, data: sessionDeleted });
 
 
