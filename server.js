@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const colors = require("colors");
 const cors = require('cors')
 const connectDB = require('./config/db')
-
+const errorHandler = require('./middlewares/error');
 
 // load env
 dotenv.config({ path: './config/config.env'});
@@ -49,6 +49,8 @@ app.use(
 
 // Mount routers
 app.use("/api/v1/sessions", sessionRoutes );
+
+app.use(errorHandler);
 
 
 
