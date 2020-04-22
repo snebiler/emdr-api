@@ -8,6 +8,11 @@ const errorHandler = require("./middlewares/error");
 const cron = require("node-cron");
 const Sessions = require("./models/Sessions");
 const hours = require("./utils/timeConvertion");
+const helmet = require('helmet');
+const xss = require('xss-clean')
+const rateLimit = require('express-rate-limit')
+const hpp = require('hpp')
+const mongoSanitize = require('express-mongo-sanitize');
 // load env
 dotenv.config({ path: "./config/config.env" });
 
@@ -22,6 +27,26 @@ const app = express();
 
 // Body Parser
 app.use(express.json());
+
+// Sanitize mongo data
+app.use(mongoSanitize());
+
+// Set security headers
+app.use(helmet());
+
+// Prevent Xss 
+app.use(xss());
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 mins
+  max: 100
+});
+
+app.use(limiter);
+
+// Prevent http param pollution
+app.use(hpp());
 
 // Dev loggin middleware
 if (process.env.NODE_ENV === "development") {
@@ -51,6 +76,7 @@ app.use(
 app.use("/api/v1/sessions", sessionRoutes);
 
 app.use(errorHandler);
+
 
 cron.schedule(
   "0 2 * * *",
