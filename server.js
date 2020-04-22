@@ -48,6 +48,7 @@ app.use(limiter);
 // Prevent http param pollution
 app.use(hpp());
 
+
 // Dev loggin middleware
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -126,9 +127,9 @@ let io = require("socket.io")(server);
 app.set("io", io);
 
 io.on("connection", (socket) => {
-  socket.emit("welcome", "welcome from Server.js");
+  // socket.emit("welcome", "welcome from Server.js");
   socket.on("react", (data) => console.log(data));
-  socket.on("disconnect", () => console.log("Socket user disconnect"));
+  // socket.on("disconnect", () => console.log("Socket user disconnect"));
 });
 
 // handle unhandled promis rejection

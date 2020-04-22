@@ -14,7 +14,8 @@ const errorHandler = (err, req, res, next) => {
 
   // Log to consel for devoloper
   console.log(`${'ERROR HANDLER--->>'} ${err}`);
-
+  console.log(`Error Code: ==> ${err.code} <=> Error Name: ${err.name}`);
+  
   /**
    * Mongodb nin kendine özel hataları ve kodları var
    * sık kullanılanlara özel if yazmak kolay oluyormuş

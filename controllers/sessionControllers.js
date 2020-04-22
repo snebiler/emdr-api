@@ -1,5 +1,5 @@
 const Sessions = require("../models/Sessions");
-const ErrorResponse = require('../utils/errorResponse');
+const ErrorResponse = require("../utils/errorResponse");
 /**
  * @desc get Session list - not implemented
  * @route GET /api/v1/sessions
@@ -11,7 +11,7 @@ exports.getSessions = (req, res, next) => {
 
 /**
  * @desc get single session
- * @route GET /api/v1/session/:id
+ * @route GET /api/v1/sessions/:id
  * @access Public
  */
 exports.getSessionById = async (req, res, next) => {
@@ -22,7 +22,10 @@ exports.getSessionById = async (req, res, next) => {
 
   if (!session) {
     return next(
-      new ErrorResponse(`Seans No hatalı. Aranan Seans No: ${req.params.id}`, 404)
+      new ErrorResponse(
+        `Seans No hatalı. Aranan Seans No: ${req.params.id}`,
+        404
+      )
     );
   }
 
@@ -41,13 +44,17 @@ exports.createSession = async (req, res, next) => {
   // res.status(200).send("session created")
 
   console.log(req.body);
+  try {
+    const session = await Sessions.create(req.body);
 
-  const session = await Sessions.create(req.body);
-
-  res.status(200).json({
-    success: true,
-    data: session,
-  });
+    res.status(200).json({
+      success: true,
+      data: session,
+    });
+  } catch (error) {
+    console.log(error);
+    return next(new ErrorResponse(`Seans oluşturma hatası`, 404));
+  }
 };
 
 /**
@@ -60,16 +67,24 @@ exports.updateSession = async (req, res, next) => {
   console.log(req.body);
   // console.log(req);
 
-  const session = await Sessions.findById(req.body._id);
+let session;
 
-  if (!session) {
-    return next(
-      new ErrorResponse(`Seans No hatalı. Aranan Seans No: ${req.params.id}`, 404)
-    );
-  }
+try {
+  session = await Sessions.findById(req.body._id);
+} catch (error) {
+  console.log(error);
+  return next(new ErrorResponse(`Seans id hatalı`, 404));
+}
+  
 
-//   console.log("<<<<<<BEFORE UPDATE:>>>");
-//   console.log(session);
+  // if (!session) {
+  //   return next(
+  //     new ErrorResponse(
+  //       `Seans No hatalı. Aranan Seans No: ${req.params.id}`,
+  //       404
+  //     )
+  //   );
+  // }
 
   for (const key of Object.keys(req.body)) {
     session[key] = req.body[key];
@@ -77,14 +92,22 @@ exports.updateSession = async (req, res, next) => {
 
   let io = req.app.get("io");
   // console.log(io);
-
+try {
   io.on("react", (data) => console.log(data));
   io.emit("fromServer", { hasSessionChanged: true });
+} catch (error) {
+  console.log(error);
+  return next(new ErrorResponse(`Socket hatası`, 404));
+}
+  
 
-//   console.log("<<<<<<AFTER UPDATE:>>>");
-//   console.log(session);
-  session.save();
-  res.status(200).json({ success: true, data: session });
+  try {
+    session.save();
+    res.status(200).json({ success: true, data: session });
+  } catch (error) {
+    console.log(error);
+    return next(new ErrorResponse(`Güncelleme hatası`, 404));
+  }
 };
 /**
  * @desc delete session
@@ -97,10 +120,13 @@ exports.deleteSession = async (req, res, next) => {
   const sessionDeleted = await Sessions.findByIdAndDelete(req.body._id);
   if (!sessionDeleted) {
     return next(
-      new ErrorResponse(`Seans No hatalı. Aranan Seans No: ${req.params.id}`, 404)
+      new ErrorResponse(
+        `Seans No hatalı. Aranan Seans No: ${req.params.id}`,
+        404
+      )
     );
   }
-//   console.log(sessionDeleted);
+  //   console.log(sessionDeleted);
 
   res.status(200).json({ success: true, data: sessionDeleted });
 };
