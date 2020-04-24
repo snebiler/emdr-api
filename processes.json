@@ -1,5 +1,5 @@
 {
-    "script": "node server.js",
+    "script": "npm run dev",
     "watch": false,
     "ignore_watch": ["node_modules"],
     "watch_options": {
