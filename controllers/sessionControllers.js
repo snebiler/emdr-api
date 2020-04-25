@@ -95,6 +95,7 @@ try {
 try {
   io.on("react", (data) => console.log(data));
   io.emit("fromServer", { hasSessionChanged: true });
+  // io.close(() => console.log("io.close"));
 } catch (error) {
   console.log(error);
   return next(new ErrorResponse(`Socket hatası`, 404));
