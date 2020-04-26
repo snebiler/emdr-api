@@ -15,7 +15,7 @@ const hpp = require('hpp')
 const mongoSanitize = require('express-mongo-sanitize');
 // load env
 dotenv.config({ path: "./config/config.env" });
-
+const eventEmitter = require('events');
 // Route files
 const sessionRoutes = require("./routes/sessionRoutes");
 
@@ -126,11 +126,13 @@ const server = app.listen(
 let io = require("socket.io")(server);
 app.set("io", io);
 
-io.on("connection", (socket) => {
-  // socket.emit("welcome", "welcome from Server.js");
-  socket.on("react", (data) => console.log(data));
-  // socket.on("disconnect", () => console.log("Socket user disconnect"));
-});
+// console.log(eventEmitter.listenerCount('fromServer'));
+
+// io.on("connection", (socket) => {
+//   // socket.emit("welcome", "welcome from Server.js");
+//   socket.on("react", (data) => console.log(data));
+//   // socket.on("disconnect", () => console.log("Socket user disconnect"));
+// });
 
 // handle unhandled promis rejection
 process.on("unhandledRejection", (err, promise) => {
