@@ -67,15 +67,14 @@ exports.updateSession = async (req, res, next) => {
   console.log(req.body);
   // console.log(req);
 
-let session;
+  let session;
 
-try {
-  session = await Sessions.findById(req.body._id);
-} catch (error) {
-  console.log(error);
-  return next(new ErrorResponse(`Seans id hatalı`, 404));
-}
-  
+  try {
+    session = await Sessions.findById(req.body._id);
+  } catch (error) {
+    console.log(error);
+    return next(new ErrorResponse(`Seans id hatalı`, 404));
+  }
 
   // if (!session) {
   //   return next(
@@ -91,17 +90,25 @@ try {
   }
 
   let io = req.app.get("io");
+  // let socketIdList = [];
   // console.log(io);
-try {
-  // io.on("react", (data) => console.log(data));
-  io.emit("fromServer", { hasSessionChanged: true });
-  // io.close(() => console.log("io.close"));
-  
-} catch (error) {
-  console.log(error);
-  return next(new ErrorResponse(`Socket hatası`, 404));
-}
-  
+  try {
+    // // io.on("react", (data) => console.log(data));
+    // io.on("connection", (socket) => {
+    //   socketIdList.push(socket.id);
+    //   console.log(socketIdList);
+      
+    // });
+    io.emit("fromServer", { ...session._doc });
+    // io.close(() => console.log("io.close"));
+    io.on("disconnect", () => {
+      console.log("SOCKET DISCONNECT");
+      io.removeAlllisteners;
+    });
+  } catch (error) {
+    console.log(error);
+    return next(new ErrorResponse(`Socket hatası`, 404));
+  }
 
   try {
     session.save();
