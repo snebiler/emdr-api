@@ -64,7 +64,7 @@ exports.createSession = async (req, res, next) => {
  */
 exports.updateSession = async (req, res, next) => {
   console.log("<<<<<<REQ BODY>>>");
-  console.log(req.body);
+  // console.log(req.body);
   // console.log(req);
 
   let session;
@@ -76,23 +76,13 @@ exports.updateSession = async (req, res, next) => {
     return next(new ErrorResponse(`Seans id hatalı`, 404));
   }
 
- 
   for (const key of Object.keys(req.body)) {
     session[key] = req.body[key];
   }
 
   let io = req.app.get("io");
-  // console.log(typeof req.body._id);
-  
-  // let socketIdList = [];
-  // console.log(io);
   try {
-   
-        
-        io.emit(req.body._id, { ...session._doc });
-        // console.log("IN CONNECTION");
-
-      
+    io.emit(req.body._id, { ...session._doc });
 
     // io.emit(req.body._id, { ...session._doc })
     // io.close(() => console.log("io.close"));
