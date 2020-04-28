@@ -127,6 +127,8 @@ let io = require("socket.io")(server);
 app.set("io", io);
 
 
+
+// io.on('connection', (socket) => socket.join(app.request.body._id))
 // console.log(eventEmitter.listenerCount('fromServer'));
 
 // io.on("connection", (socket) => {

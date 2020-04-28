@@ -15,8 +15,8 @@ exports.getSessions = (req, res, next) => {
  * @access Public
  */
 exports.getSessionById = async (req, res, next) => {
-  console.log("<<<<<<REQ BODY>>>");
-  console.log(req.params);
+  // console.log("<<<<<<REQ BODY>>>");
+  // console.log(req.params);
 
   const session = await Sessions.findOne({ sessionId: req.params.id });
 
@@ -76,34 +76,28 @@ exports.updateSession = async (req, res, next) => {
     return next(new ErrorResponse(`Seans id hatalı`, 404));
   }
 
-  // if (!session) {
-  //   return next(
-  //     new ErrorResponse(
-  //       `Seans No hatalı. Aranan Seans No: ${req.params.id}`,
-  //       404
-  //     )
-  //   );
-  // }
-
+ 
   for (const key of Object.keys(req.body)) {
     session[key] = req.body[key];
   }
 
   let io = req.app.get("io");
+  // console.log(typeof req.body._id);
+  
   // let socketIdList = [];
   // console.log(io);
   try {
     // // io.on("react", (data) => console.log(data));
     // io.on("connection", (socket) => {
-    //   socketIdList.push(socket.id);
-    //   console.log(socketIdList);
+    //   socket.join(req.body._id)
       
     // });
-    io.emit("fromServer", { ...session._doc });
+
+    io.emit(req.body._id, { ...session._doc })
     // io.close(() => console.log("io.close"));
     io.on("disconnect", () => {
       console.log("SOCKET DISCONNECT");
-      io.removeAlllisteners;
+      io.removeListener(req.body._id);
     });
   } catch (error) {
     console.log(error);
