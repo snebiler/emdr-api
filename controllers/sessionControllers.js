@@ -87,13 +87,14 @@ exports.updateSession = async (req, res, next) => {
   // let socketIdList = [];
   // console.log(io);
   try {
-    // // io.on("react", (data) => console.log(data));
-    // io.on("connection", (socket) => {
-    //   socket.join(req.body._id)
-      
-    // });
+   
+        
+        io.emit(req.body._id, { ...session._doc });
+        // console.log("IN CONNECTION");
 
-    io.emit(req.body._id, { ...session._doc })
+      
+
+    // io.emit(req.body._id, { ...session._doc })
     // io.close(() => console.log("io.close"));
     io.on("disconnect", () => {
       console.log("SOCKET DISCONNECT");
