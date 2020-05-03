@@ -44,8 +44,8 @@ const SessionSchema = new mongoose.Schema({
     },
     sound: {
         type: String,
-        enum: ['drip', 'drop'],
-        default: 'drip'
+        enum: ['drip', 'drop', 'off'],
+        default: 'off'
     },
     hasBallStarted: {
         type: Boolean,
