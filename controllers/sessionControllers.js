@@ -63,8 +63,8 @@ exports.createSession = async (req, res, next) => {
  * @access Private
  */
 exports.updateSession = async (req, res, next) => {
-  console.log("<<<<<<REQ BODY>>>");
-  console.log(req.body);
+  // console.log("<<<<<<REQ BODY>>>");
+  // console.log(req.body);
   // console.log(req);
 
   let session;
