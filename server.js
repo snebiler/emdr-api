@@ -15,7 +15,7 @@ const hpp = require('hpp')
 const mongoSanitize = require('express-mongo-sanitize');
 // load env
 dotenv.config({ path: "./config/config.env" });
-const eventEmitter = require('events');
+const EventEmitter = require('events');
 // Route files
 const sessionRoutes = require("./routes/sessionRoutes");
 
@@ -127,6 +127,18 @@ let io = require("socket.io")(server);
 app.set("io", io);
 
 
+// class MyEmitter extends EventEmitter {}
+
+// const myEmitter = new MyEmitter();
+// // console.log((eventEmitter.getMaxListeners()).red);
+// myEmitter.on('error', (err) => {
+//   console.log('Error Oldu');
+  
+// })
+// myEmitter.on('MaxListenersExceededWarning', () => {
+//   console.log('max listener Oldu'.red);
+  
+// })
 
 // io.on('connection', (socket) => socket.join(app.request.body._id))
 // console.log(eventEmitter.listenerCount('fromServer'));

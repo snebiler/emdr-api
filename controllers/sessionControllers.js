@@ -43,7 +43,7 @@ exports.getSessionById = async (req, res, next) => {
 exports.createSession = async (req, res, next) => {
   // res.status(200).send("session created")
 
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const session = await Sessions.create(req.body);
 
@@ -82,14 +82,26 @@ exports.updateSession = async (req, res, next) => {
 
   let io = req.app.get("io");
   try {
-    io.emit(req.body._id, { ...session._doc });
+    // io.on('connection', (socket) => {
+      io.emit(req.body._id, { ...session._doc });
+     /**
+      * DİĞER EVENTLERİN HEPSİNDE MAX LİSTENER WARNING VERDI
+      */
+      // socket.on("disconnect", () => {
+      //   console.log("SOCKET DISCONNECT");
+      //   io.removeListener(req.body._id);
+      // });
+    // })
+    // io.emit(req.body._id, { ...session._doc });
 
     // io.emit(req.body._id, { ...session._doc })
     // io.close(() => console.log("io.close"));
-    io.on("disconnect", () => {
-      console.log("SOCKET DISCONNECT");
-      io.removeListener(req.body._id);
-    });
+    // alt taraf en son
+
+    // io.on("disconnect", () => {
+    //   console.log("SOCKET DISCONNECT");
+    //   io.removeListener(req.body._id);
+    // });
   } catch (error) {
     console.log(error);
     return next(new ErrorResponse(`Socket hatası`, 404));
@@ -109,7 +121,7 @@ exports.updateSession = async (req, res, next) => {
  * @access Private
  */
 exports.deleteSession = async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   const sessionDeleted = await Sessions.findByIdAndDelete(req.body._id);
   if (!sessionDeleted) {
