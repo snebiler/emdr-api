@@ -151,7 +151,7 @@ app.set("io", io);
 
 // handle unhandled promis rejection
 process.on("unhandledRejection", (err, promise) => {
-  console.log(`Error: ${err.message}`);
+  console.log(`Error (Unhandled Rejection): ${err.message}`);
   // Close server
-  server.close(() => process.exit(1));
+  // server.close(() => process.exit(1));
 });
