@@ -82,8 +82,14 @@ exports.updateSession = async (req, res, next) => {
 
   let io = req.app.get("io");
   try {
+
+    // io.on('connect', (socket) => {
+    //   console.log("socket id " + socket.id)
+    // })
     // io.on('connection', (socket) => {
       io.emit(req.body._id, { ...session._doc });
+      // console.log("VERI GITTI");
+      
      /**
       * DİĞER EVENTLERİN HEPSİNDE MAX LİSTENER WARNING VERDI
       */
